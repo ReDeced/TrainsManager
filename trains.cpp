@@ -112,7 +112,11 @@ public:
         cars.push_back(car);
     }
 
-    double calculate_price(const std::string& from, std::string& to, int car_id) const {
+    int get_id() const {
+        return id;
+    }
+
+    double calculate_price(const std::string& from, const std::string& to, int car_id) const {
         double distance = route.get_distance_between(from, to);
         double car_coef = 0.0;
 
