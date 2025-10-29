@@ -30,7 +30,7 @@ public:
         return stations;
     }
 
-    double get_distance_between(const std::string& from_name, const std::string& to_name) {
+    double get_distance_between(const std::string& from_name, const std::string& to_name) const {
         Coordinates start_pos, end_pos;
         bool start_found = false, end_found = false;
         
