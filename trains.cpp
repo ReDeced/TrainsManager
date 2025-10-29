@@ -107,12 +107,12 @@ public:
     void add_departure_date(std::string& date) {
         departure_dates.push_back(date);
     }
-
+ 
     void add_car(const Car& car) {
         cars.push_back(car);
     }
 
-    const double calculate_price(const std::string& from, std::string& to, int car_id) {
+    double calculate_price(const std::string& from, std::string& to, int car_id) const {
         double distance = route.get_distance_between(from, to);
         double car_coef = 0.0;
 
