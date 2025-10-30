@@ -45,8 +45,10 @@ protected:
 
 public:
     Car(int id, double price_coef, int seats);
+    Car(int id, double price_coef, int seats, int seats_free);
     int get_id() const { return id; }
     double get_price_coef() const;
+    double get_seats_count() const;
     double get_seats_free() const;
     friend class Train;
 };
@@ -65,6 +67,7 @@ public:
     void add_departure_date(std::string date);
     void add_car(const Car& car);
     double calculate_price(const std::string& from, const std::string& to, int car_id) const;
+    Route& get_route() { return route; }
     const Route& get_route() const { return route; }
     int get_id() const;
     const TrainType& get_type() const { return type; }
