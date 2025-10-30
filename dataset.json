@@ -3,50 +3,38 @@
         {
             "id": 1,
             "price_coef": 2.5,
-            "seats_count": 20.0
+            "seats_count": 20.0,
+            "seats_free": 20.0
         },
         {
             "id": 2,
             "price_coef": 1.8,
-            "seats_count": 36.0
+            "seats_count": 36.0,
+            "seats_free": 36.0
         },
         {
             "id": 3,
             "price_coef": 1.2,
-            "seats_count": 54.0
+            "seats_count": 54.0,
+            "seats_free": 54.0
         },
         {
             "id": 4,
             "price_coef": 1.0,
-            "seats_count": 80.0
+            "seats_count": 80.0,
+            "seats_free": 79.0
         },
         {
             "id": 5,
             "price_coef": 3.0,
-            "seats_count": 16.0
+            "seats_count": 16.0,
+            "seats_free": 15.0
         },
         {
             "id": 6,
             "price_coef": 2.8,
-            "seats_count": 24.0
-        }
-    ],
-    "routes": [
-        {
-            "stations": [
-                "Хогвартс",
-                "Китеж-град",
-                "Тридевятое Царство",
-                "Тридесятое Государство"
-            ]
-        },
-        {
-            "stations": [
-                "Звездный Городок",
-                "Атлантида",
-                "Шангри-Ла",
-                "Тридесятое Государство"
-            ]
+            "seats_count": 24.0,
+            "seats_free": 23.0
         }
     ],
     "stations": [
@@ -98,6 +86,20 @@
                 44.0065
             ],
             "name": "Китеж-град"
+        },
+        {
+            "coords": [
+                56.0096,
+                37.5185
+            ],
+            "name": "Долгопрудный"
+        },
+        {
+            "coords": [
+                54.192,
+                37.6156
+            ],
+            "name": "Тула"
         }
     ],
     "train_types": [
@@ -120,7 +122,7 @@
     ],
     "trains": [
         {
-            "base_price": 113.90625,
+            "base_price": 9852.612533569336,
             "cars": [
                 5,
                 1
@@ -130,11 +132,13 @@
                 "2024-03-16"
             ],
             "id": 1,
-            "route": "Хогвартс",
+            "route": [
+                "Хогвартс"
+            ],
             "train_type": "Магический экспресс"
         },
         {
-            "base_price": 960.0,
+            "base_price": 1966080.0,
             "cars": [
                 6,
                 2
@@ -144,11 +148,13 @@
                 "2024-03-18"
             ],
             "id": 2,
-            "route": "Хогвартс",
+            "route": [
+                "Хогвартс"
+            ],
             "train_type": "Космический курьер"
         },
         {
-            "base_price": 35.83180799999999,
+            "base_price": 266.23333280885225,
             "cars": [
                 3,
                 4
@@ -158,12 +164,47 @@
                 "2024-03-20"
             ],
             "id": 3,
-            "route": "Хогвартс",
+            "route": [
+                "Хогвартс"
+            ],
+            "train_type": "Сказочный поезд"
+        },
+        {
+            "base_price": 500.0,
+            "cars": [
+                2,
+                3
+            ],
+            "departure_dates": [
+                "2024-04-01",
+                "2024-04-02"
+            ],
+            "id": 4,
+            "route": [
+                "Долгопрудный"
+            ],
+            "train_type": "Обычный маршрут"
+        },
+        {
+            "base_price": 1347.84,
+            "cars": [
+                1,
+                5
+            ],
+            "departure_dates": [
+                "2024-04-03",
+                "2024-04-04"
+            ],
+            "id": 5,
+            "route": [
+                "Тула"
+            ],
             "train_type": "Сказочный поезд"
         }
     ],
     "users": [
         {
+            "id": 1,
             "passport": {
                 "birth_date": "2003-10-30",
                 "name": "Гарри",
@@ -181,6 +222,7 @@
             ]
         },
         {
+            "id": 2,
             "passport": {
                 "birth_date": "2003-09-19",
                 "name": "Гермиона",
@@ -205,13 +247,14 @@
             ]
         },
         {
+            "id": 3,
             "passport": {
                 "birth_date": "2003-03-01",
                 "name": "Рон",
                 "passport_id": 3456789012,
                 "surname": "Уизли"
             },
-            "tickets": null
+            "tickets": []
         }
     ]
 }
