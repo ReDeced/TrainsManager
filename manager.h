@@ -30,7 +30,7 @@ public:
 
     User& register_user();
 
-    User* get_user(int passport_id);
+    User* get_user(u_int64_t passport_id);
 
     ~Manager();
 };
