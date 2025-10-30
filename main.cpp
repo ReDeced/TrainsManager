@@ -18,7 +18,7 @@ int main() {
     if (choice == 1) {
         current_user = &manager.register_user();
     } else if (choice == 2) {
-        int passport_id;
+        u_int64_t passport_id;
         std::cout << "Введите номер паспорта (10 цифр): ";
         std::cin >> passport_id;
         std::cin.ignore();
