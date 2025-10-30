@@ -1,260 +1,91 @@
 {
     "cars": [
-        {
-            "id": 1,
-            "price_coef": 2.5,
-            "seats_count": 20.0,
-            "seats_free": 20.0
-        },
-        {
-            "id": 2,
-            "price_coef": 1.8,
-            "seats_count": 36.0,
-            "seats_free": 36.0
-        },
-        {
-            "id": 3,
-            "price_coef": 1.2,
-            "seats_count": 54.0,
-            "seats_free": 54.0
-        },
-        {
-            "id": 4,
-            "price_coef": 1.0,
-            "seats_count": 80.0,
-            "seats_free": 79.0
-        },
-        {
-            "id": 5,
-            "price_coef": 3.0,
-            "seats_count": 16.0,
-            "seats_free": 15.0
-        },
-        {
-            "id": 6,
-            "price_coef": 2.8,
-            "seats_count": 24.0,
-            "seats_free": 23.0
-        }
+        {"id": 1, "price_coef": 2.5, "seats_count": 20.0, "seats_free": 20.0},
+        {"id": 2, "price_coef": 1.8, "seats_count": 36.0, "seats_free": 36.0},
+        {"id": 3, "price_coef": 1.2, "seats_count": 54.0, "seats_free": 54.0},
+        {"id": 4, "price_coef": 1.0, "seats_count": 80.0, "seats_free": 79.0},
+        {"id": 5, "price_coef": 3.0, "seats_count": 16.0, "seats_free": 15.0},
+        {"id": 6, "price_coef": 2.8, "seats_count": 24.0, "seats_free": 23.0}
     ],
     "stations": [
-        {
-            "coords": [
-                54.193,
-                37.6173
-            ],
-            "name": "Хогвартс"
-        },
-        {
-            "coords": [
-                59.9311,
-                30.3609
-            ],
-            "name": "Тридевятое Царство"
-        },
-        {
-            "coords": [
-                55.7558,
-                37.6173
-            ],
-            "name": "Тридесятое Государство"
-        },
-        {
-            "coords": [
-                55.8722,
-                38.1131
-            ],
-            "name": "Звездный Городок"
-        },
-        {
-            "coords": [
-                43.5853,
-                39.7233
-            ],
-            "name": "Атлантида"
-        },
-        {
-            "coords": [
-                43.0167,
-                131.9
-            ],
-            "name": "Шангри-Ла"
-        },
-        {
-            "coords": [
-                56.3269,
-                44.0065
-            ],
-            "name": "Китеж-град"
-        },
-        {
-            "coords": [
-                56.0096,
-                37.5185
-            ],
-            "name": "Долгопрудный"
-        },
-        {
-            "coords": [
-                54.192,
-                37.6156
-            ],
-            "name": "Тула"
-        }
+        {"coords": [54.193, 37.6173], "name": "Хогвартс"},
+        {"coords": [59.9311, 30.3609], "name": "Тридевятое Царство"},
+        {"coords": [55.7558, 37.6173], "name": "Тридесятое Государство"},
+        {"coords": [55.8722, 38.1131], "name": "Звездный Городок"},
+        {"coords": [43.5853, 39.7233], "name": "Атлантида"},
+        {"coords": [43.0167, 131.9], "name": "Шангри-Ла"},
+        {"coords": [56.3269, 44.0065], "name": "Китеж-град"},
+        {"coords": [56.0096, 37.5185], "name": "Долгопрудный"},
+        {"coords": [54.192, 37.6156], "name": "Тула"}
     ],
     "train_types": [
-        {
-            "name": "Магический экспресс",
-            "price_coef": 1.5
-        },
-        {
-            "name": "Космический курьер",
-            "price_coef": 2.0
-        },
-        {
-            "name": "Сказочный поезд",
-            "price_coef": 1.2
-        },
-        {
-            "name": "Обычный маршрут",
-            "price_coef": 1.0
-        }
+        {"name": "Магический экспресс", "price_coef": 1.5},
+        {"name": "Космический курьер", "price_coef": 2.0},
+        {"name": "Сказочный поезд", "price_coef": 1.2},
+        {"name": "Обычный маршрут", "price_coef": 1.0}
     ],
     "trains": [
         {
-            "base_price": 9852.612533569336,
-            "cars": [
-                5,
-                1
-            ],
-            "departure_dates": [
-                "2024-03-15",
-                "2024-03-16"
-            ],
             "id": 1,
-            "route": [
-                "Хогвартс"
-            ],
+            "base_price": 1946.20,
+            "cars": [5, 1],
+            "departure_dates": ["2024-03-15", "2024-03-16"],
+            "route": ["Хогвартс", "Китеж-град", "Тридевятое Царство", "Тридесятое Государство"],
             "train_type": "Магический экспресс"
         },
         {
-            "base_price": 1966080.0,
-            "cars": [
-                6,
-                2
-            ],
-            "departure_dates": [
-                "2024-03-17",
-                "2024-03-18"
-            ],
             "id": 2,
-            "route": [
-                "Хогвартс"
-            ],
+            "base_price": 122880.0,
+            "cars": [6, 2],
+            "departure_dates": ["2024-03-17", "2024-03-18"],
+            "route": ["Хогвартс", "Китеж-град", "Тридевятое Царство", "Тридесятое Государство"],
             "train_type": "Космический курьер"
         },
         {
-            "base_price": 266.23333280885225,
-            "cars": [
-                3,
-                4
-            ],
-            "departure_dates": [
-                "2024-03-19",
-                "2024-03-20"
-            ],
             "id": 3,
-            "route": [
-                "Хогвартс"
-            ],
+            "base_price": 128.39,
+            "cars": [3, 4],
+            "departure_dates": ["2024-03-19", "2024-03-20"],
+            "route": ["Хогвартс", "Китеж-град", "Тридевятое Царство", "Тридесятое Государство"],
             "train_type": "Сказочный поезд"
         },
         {
-            "base_price": 500.0,
-            "cars": [
-                2,
-                3
-            ],
-            "departure_dates": [
-                "2024-04-01",
-                "2024-04-02"
-            ],
             "id": 4,
-            "route": [
-                "Долгопрудный"
-            ],
+            "base_price": 500.0,
+            "cars": [2, 3],
+            "departure_dates": ["2024-04-01", "2024-04-02"],
+            "route": ["Долгопрудный", "Тула", "Тридесятое Государство"],
             "train_type": "Обычный маршрут"
         },
         {
-            "base_price": 1347.84,
-            "cars": [
-                1,
-                5
-            ],
-            "departure_dates": [
-                "2024-04-03",
-                "2024-04-04"
-            ],
             "id": 5,
-            "route": [
-                "Тула"
-            ],
+            "base_price": 650.0,
+            "cars": [1, 5],
+            "departure_dates": ["2024-04-03", "2024-04-04"],
+            "route": ["Тула", "Долгопрудный", "Китеж-град"],
             "train_type": "Сказочный поезд"
         }
     ],
     "users": [
         {
             "id": 1,
-            "passport": {
-                "birth_date": "2003-10-30",
-                "name": "Гарри",
-                "passport_id": 1234567890,
-                "surname": "Поттер"
-            },
+            "passport": {"birth_date": "2003-10-30", "name": "Гарри", "passport_id": 1234567890, "surname": "Поттер"},
             "tickets": [
-                {
-                    "car_id": 5,
-                    "from_station": "Хогвартс",
-                    "price": 45.0,
-                    "to_station": "Тридесятое Государство",
-                    "train_id": 1
-                }
+                {"car_id": 5, "from_station": "Хогвартс", "price": 45.0, "to_station": "Тридесятое Государство", "train_id": 1}
             ]
         },
         {
             "id": 2,
-            "passport": {
-                "birth_date": "2003-09-19",
-                "name": "Гермиона",
-                "passport_id": 2345678901,
-                "surname": "Грейнджер"
-            },
+            "passport": {"birth_date": "2003-09-19", "name": "Гермиона", "passport_id": 2345678901, "surname": "Грейнджер"},
             "tickets": [
-                {
-                    "car_id": 6,
-                    "from_station": "Звездный Городок",
-                    "price": 55.0,
-                    "to_station": "Шангри-Ла",
-                    "train_id": 2
-                },
-                {
-                    "car_id": 4,
-                    "from_station": "Китеж-град",
-                    "price": 40.0,
-                    "to_station": "Тридевятое Царство",
-                    "train_id": 3
-                }
+                {"car_id": 6, "from_station": "Звездный Городок", "price": 55.0, "to_station": "Шангри-Ла", "train_id": 2},
+                {"car_id": 4, "from_station": "Китеж-град", "price": 40.0, "to_station": "Тридевятое Царство", "train_id": 3}
             ]
         },
         {
             "id": 3,
-            "passport": {
-                "birth_date": "2003-03-01",
-                "name": "Рон",
-                "passport_id": 3456789012,
-                "surname": "Уизли"
-            },
-            "tickets": []
+            "passport": {"birth_date": "2003-03-01", "name": "Рон", "passport_id": 3456789012, "surname": "Уизли"},
+            "tickets": null
         }
     ]
 }

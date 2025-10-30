@@ -44,6 +44,25 @@ int main() {
 
     if (user_choice == 1) {
         current_user->show_tickets();
+
+        // --- Новый блок: сохранение билетов ---
+        if (!current_user->get_tickets().empty()) {
+            std::cout << "\nСохранить билеты в файл? (y/n): ";
+            char save_choice;
+            std::cin >> save_choice;
+            std::cin.ignore();
+
+            if (save_choice == 'y' || save_choice == 'Y') {
+                for (auto& ticket : current_user->get_tickets()) {
+                    ticket.save_to_file();
+                }
+                std::cout << "Билеты сохранены.\n";
+            } else {
+                std::cout << "Билеты не сохранены.\n";
+            }
+        } else {
+            std::cout << "У вас нет билетов для сохранения.\n";
+        }
     } else {
         std::cout << "Выход.\n";
     }
