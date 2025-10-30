@@ -1,163 +1,151 @@
+#include <fstream>
+#include <iostream>
 #include "manager.h"
 #include "users.h"
 #include "trains.h"
 #include "json/single_include/nlohmann/json.hpp"
-#include <fstream>
-#include <iomanip>
-#include <algorithm>
-#include <iostream>
 
 using json = nlohmann::json;
 
 void Manager::load_from_file(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "❌ Не удалось открыть JSON файл: " << filename << std::endl;
+        std::cerr << "❌ Не удалось открыть файл: " << filename << std::endl;
         return;
     }
 
     json data;
     file >> data;
 
-    stations.clear();
-    train_types.clear();
-    cars.clear();
-    routes.clear();
-    trains.clear();
-    users.clear();
-
     // --- Станции ---
-    for (const auto& s : data["stations"]) {
-        stations.push_back({ s["name"], { s["coords"][0], s["coords"][1] } });
+    stations.clear();
+    for (auto& s : data["stations"]) {
+        stations.push_back({s["name"], {s["coords"][0], s["coords"][1]}});
     }
 
     // --- Типы поездов ---
-    for (const auto& t : data["train_types"]) {
-        train_types.push_back({ t["name"], t["price_coef"] });
+    train_types.clear();
+    for (auto& t : data["train_types"]) {
+        train_types.push_back({t["name"], t["price_coef"]});
     }
 
     // --- Вагоны ---
-    for (const auto& c : data["cars"]) {
-        cars.push_back({ c["id"], c["price_coef"], c["seats_count"] });
-    }
-
-    // --- Маршруты ---
-    for (const auto& r : data["routes"]) {
-        Route route;
-        for (const auto& station_name : r["stations"]) {
-            auto it = std::find_if(stations.begin(), stations.end(),
-                                   [&](const Station& s) { return s.name == station_name; });
-            if (it != stations.end()) route.add_station(*it);
-        }
-        routes.push_back(route);
+    cars.clear();
+    for (auto& c : data["cars"]) {
+        cars.push_back({c["id"], c["price_coef"], c["seats_count"], c["seats_free"]});
     }
 
     // --- Поезда ---
-    for (const auto& tr : data["trains"]) {
-        int id = tr["id"];
-        std::string train_type_name = tr["train_type"];
-        std::string route_name = tr["route"];
-        double base_price = tr["base_price"];
-
+    trains.clear();
+    for (auto& t : data["trains"]) {
         auto type_it = std::find_if(train_types.begin(), train_types.end(),
-                                    [&](const TrainType& t){ return t.name == train_type_name; });
+                                    [&](const TrainType& tt){ return tt.name == t["train_type"]; });
 
-        auto route_it = routes.begin();
-        if (!routes.empty()) route_it = routes.begin();  // Для простоты
-
-        if (type_it != train_types.end() && route_it != routes.end()) {
-            Train train(id, *type_it, *route_it, base_price);
-            for (const auto& d : tr["departure_dates"]) train.add_departure_date(d);
-            for (const auto& c_id : tr["cars"]) {
-                auto car_it = std::find_if(cars.begin(), cars.end(),
-                                           [&](const Car& car){ return car.get_id() == c_id; });
-                if (car_it != cars.end()) train.add_car(*car_it);
+        if (type_it != train_types.end()) {
+            // Сначала создаём маршрут
+            Route route;
+            for (auto& sname : t["route"]) {
+                auto it = std::find_if(stations.begin(), stations.end(),
+                                       [&](const Station& s){ return s.name == sname; });
+                if (it != stations.end())
+                    route.add_station(*it);
             }
+
+            // Создаём поезд с уже готовым маршрутом
+            Train train(t["id"], *type_it, route, t["base_price"]);
+
+            // Загружаем даты отправления
+            for (auto& date : t["departure_dates"])
+                train.add_departure_date(date);
+
+            // Загружаем вагоны
+            for (auto& cid : t["cars"]) {
+                auto car_it = std::find_if(cars.begin(), cars.end(),
+                                           [&](const Car& c){ return c.get_id() == cid; });
+                if (car_it != cars.end())
+                    train.add_car(*car_it);
+            }
+
             trains.push_back(train);
         }
     }
 
-    // --- Пользователи и билеты ---
-    if (data.contains("users")) {
-        for (const auto& u : data["users"]) {
-            Passport p;
-            p.name = u["passport"]["name"];
-            p.surname = u["passport"]["surname"];
-            p.passport_id = u["passport"]["passport_id"];
-            p.birth_date = u["passport"]["birth_date"];
+    // --- Пользователи ---
+    users.clear();
+    for (auto& u : data["users"]) {
+        Passport p{u["passport"]["name"], u["passport"]["surname"], u["passport"]["passport_id"].get<u_int64_t>(), u["passport"]["birth_date"]};
+        users.push_back(User(u["id"], p));
+    }
 
-            int user_id = p.passport_id;
-            users.push_back(User(user_id, p));
-        }
-
-        for (size_t i = 0; i < data["users"].size(); ++i) {
-            const auto& u = data["users"][i];
-            User& user = users[i];
-
-            if (u.contains("tickets")) {
-                for (const auto& t : u["tickets"]) {
-                    Ticket ticket;
-                    ticket.train_id = t["train_id"];
-                    ticket.car_id = t["car_id"];
-                    ticket.from_station = t["from_station"];
-                    ticket.to_station = t["to_station"];
-                    ticket.price = t["price"];
-                    ticket.owner = &user;
-
-                    user.add_ticket(ticket);
-                }
+    // --- Билеты ---
+    for (size_t i = 0; i < data["users"].size(); ++i) {
+        auto& user = users[i];
+        auto& ujson = data["users"][i];
+        if (ujson.contains("tickets")) {
+            for (auto& t : ujson["tickets"]) {
+                Ticket ticket{t["train_id"], t["car_id"], t["from_station"], t["to_station"], t["price"], &user};
+                user.add_ticket(ticket);
             }
         }
     }
-
-    std::cout << "✅ Данные загружены из " << filename << std::endl;
 }
 
 void Manager::save_to_file(const std::string& filename) const {
     json data;
 
     // --- Станции ---
-    for (const auto& s : stations) {
-        data["stations"].push_back({ {"name", s.name}, {"coords", {s.position.x, s.position.y}} });
+    for (auto& s : stations) {
+        data["stations"].push_back({
+            {"name", s.name},
+            {"coords", {s.position.x, s.position.y}}
+        });
     }
 
     // --- Типы поездов ---
-    for (const auto& t : train_types) {
-        data["train_types"].push_back({ {"name", t.name}, {"price_coef", t.price_coef} });
+    for (auto& t : train_types) {
+        data["train_types"].push_back({
+            {"name", t.name},
+            {"price_coef", t.price_coef}
+        });
     }
 
     // --- Вагоны ---
-    for (const auto& c : cars) {
-        data["cars"].push_back({ {"id", c.get_id()}, {"price_coef", c.get_price_coef()}, {"seats_count", c.get_seats_free()} });
-    }
-
-    // --- Маршруты ---
-    for (const auto& r : routes) {
-        json route_json;
-        for (const auto& s : r.get_stations()) route_json.push_back(s.name);
-        data["routes"].push_back({ {"stations", route_json} });
+    for (auto& c : cars) {
+        data["cars"].push_back({
+            {"id", c.get_id()},
+            {"price_coef", c.get_price_coef()},
+            {"seats_count", c.get_seats_count()},
+            {"seats_free", c.get_seats_free()}
+        });
     }
 
     // --- Поезда ---
-    for (const auto& tr : trains) {
+    for (auto& tr : trains) {
         json train_json;
         train_json["id"] = tr.get_id();
         train_json["train_type"] = tr.get_type().name;
-        train_json["route"] = tr.get_route().get_stations().front().name; // можно хранить маршрут как название первой станции
         train_json["base_price"] = tr.get_base_price();
         train_json["departure_dates"] = tr.get_departure_dates();
 
-        json cars_json;
-        for (const auto& c : tr.get_cars()) cars_json.push_back(c.get_id());
+        // --- Маршрут как список станций внутри поезда ---
+        json route_json = json::array();
+        for (auto& s : tr.get_route().get_stations())
+            route_json.push_back(s.name);
+        train_json["route"] = route_json;
+
+        // --- Вагоны ---
+        json cars_json = json::array();
+        for (auto& c : tr.get_cars())
+            cars_json.push_back(c.get_id());
         train_json["cars"] = cars_json;
 
         data["trains"].push_back(train_json);
     }
 
-    // --- Пользователи и билеты ---
-    json users_json;
-    for (const auto& u : users) {
+    // --- Пользователи ---
+    for (auto& u : users) {
         json user_json;
+        user_json["id"] = u.get_id();
         user_json["passport"] = {
             {"name", u.get_passport().name},
             {"surname", u.get_passport().surname},
@@ -165,8 +153,9 @@ void Manager::save_to_file(const std::string& filename) const {
             {"birth_date", u.get_passport().birth_date}
         };
 
-        json tickets_json;
-        for (const auto& t : u.get_tickets()) {
+        // --- Билеты пользователя ---
+        json tickets_json = json::array();
+        for (auto& t : u.get_tickets()) {
             tickets_json.push_back({
                 {"train_id", t.train_id},
                 {"car_id", t.car_id},
@@ -177,18 +166,16 @@ void Manager::save_to_file(const std::string& filename) const {
         }
         user_json["tickets"] = tickets_json;
 
-        users_json.push_back(user_json);
+        data["users"].push_back(user_json);
     }
-    data["users"] = users_json;
 
-    // --- Сохраняем файл ---
     std::ofstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "❌ Не удалось сохранить файл " << filename << std::endl;
+        std::cerr << "❌ Не удалось открыть файл для сохранения: " << filename << std::endl;
         return;
     }
-    file << std::setw(4) << data;
-    std::cout << "✅ Данные сохранены в файл: " << filename << std::endl;
+
+    file << std::setw(4) << data << std::endl; // Красивое форматирование
 }
 
 void Manager::load_from_file() {
@@ -227,7 +214,7 @@ User& Manager::register_user() {
     return users.back();
 }
 
-User* Manager::get_user(int passport_id) {
+User* Manager::get_user(u_int64_t passport_id) {
     for (auto& u : users) {
         if (u.get_passport().passport_id == passport_id) {
             std::cout << "Добро пожаловать, " << u.get_passport().name << "!\n";
