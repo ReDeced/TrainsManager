@@ -39,8 +39,11 @@ void Route::print_route() const {
 
 Car::Car(int id, double price_coef, int seats)
     : id(id), price_coef(price_coef), seats_count(seats), seats_free(seats) {}
+Car::Car(int id, double price_coef, int seats, int seats_free)
+    : id(id), price_coef(price_coef), seats_count(seats), seats_free(seats_free) {}
 
 double Car::get_price_coef() const { return price_coef; }
+double Car::get_seats_count() const { return seats_count; }
 double Car::get_seats_free() const { return seats_free; }
 
 Train::Train(int id, TrainType type, Route route, double price_coef)
