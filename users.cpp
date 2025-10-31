@@ -14,7 +14,7 @@ void Ticket::print_ticket() const {
 }
 
 void Ticket::save_to_file() const {
-    std::string filename = "ticket_" + std::to_string(train_id) + "_" + owner->get_passport().name + ".txt";
+    std::string filename = "tickets/ticket_" + std::to_string(train_id) + "_" + owner->get_passport().name + ".txt";
 
     std::ofstream file(filename);
     if (!file.is_open()) {
