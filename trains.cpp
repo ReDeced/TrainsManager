@@ -27,7 +27,6 @@ double Route::get_distance_between(const std::string& from_name, const std::stri
 }
 
 void Route::print_route() const {
-    std::cout << "Маршрут: ";
     for (size_t i = 0; i < stations.size(); ++i) {
         std::cout << stations[i].name;
         if (i < stations.size() - 1) {
@@ -45,6 +44,9 @@ Car::Car(int id, double price_coef, int seats, int seats_free)
 double Car::get_price_coef() const { return price_coef; }
 double Car::get_seats_count() const { return seats_count; }
 double Car::get_seats_free() const { return seats_free; }
+void Car::print_car() const {
+    std::cout << "ID: " << id << ", Коэффициент цены: " << price_coef << ", Свободные места: " << seats_free << "\n";
+}
 
 Train::Train(int id, TrainType type, Route route, double price_coef)
     : id(id), route(route), type(type) {
@@ -79,4 +81,14 @@ double Train::calculate_price(const std::string& from, const std::string& to, in
     }
     
     return distance * base_price_per_km * car_coef;
+}
+
+void Train::print_route() const {
+    std::cout << "Поезд " << id << " \nВагоны: \n";
+    for (auto& c : cars) {
+        c.print_car();
+    }
+    std::cout << "\n";
+    route.print_route();
+    std::cout << "\n=============================\n";
 }

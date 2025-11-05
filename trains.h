@@ -18,6 +18,10 @@ struct Coordinates {
 struct Station {
     std::string name;
     Coordinates position;
+
+    bool operator==(const std::string& other_name) const {
+        return name == other_name;
+    }
 };
 
 class Route {
@@ -50,6 +54,8 @@ public:
     double get_price_coef() const;
     double get_seats_count() const;
     double get_seats_free() const;
+    void buy_ticket() { --seats_free; }
+    void print_car() const;
     friend class Train;
 };
 
@@ -74,6 +80,7 @@ public:
     double get_base_price() const { return base_price_per_km; }
     const std::vector<std::string>& get_departure_dates() const { return departure_dates; }
     const std::vector<Car>& get_cars() const { return cars; }
+    void print_route() const;
 };
 
 #endif // TRAINS_H

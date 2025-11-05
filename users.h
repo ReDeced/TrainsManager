@@ -37,9 +37,7 @@ protected:
 public:
     User(int id, const Passport& passport) : id(id), passport(passport) {};
 
-    void add_ticket(const Ticket& ticket);
-
-    void buy_ticket(const Train& train, const std::string& from, const std::string& to, int car_id);
+    void add_ticket(Ticket& ticket);
 
     void show_tickets() const;
 

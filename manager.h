@@ -11,8 +11,6 @@ private:
     std::string filename;
     std::vector<Station> stations;
     std::vector<TrainType> train_types;
-    std::vector<Route> routes;
-    std::vector<Car> cars;
     std::vector<Train> trains;
     std::vector<User> users;
 
@@ -26,7 +24,9 @@ public:
     void load_from_file();
     void save_to_file() const;
 
-    Ticket buy_ticket();
+    void show_routes() const;
+
+    Ticket& buy_ticket(User& user, int train_id, int car_id, const std::string& from, const std::string& to);
 
     User& register_user();
 
