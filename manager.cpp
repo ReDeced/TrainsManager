@@ -43,7 +43,6 @@ std::cout << "Y";
                                     [&](const TrainType& tt){ return tt.name == t["train_type"]; });
 
         if (type_it != train_types.end()) {
-            // Сначала создаём маршрут
             Route route;
             for (auto& sname : t["route"]) {
                 auto it = std::find_if(stations.begin(), stations.end(),
@@ -52,14 +51,11 @@ std::cout << "Y";
                     route.add_station(*it);
             }
 
-            // Создаём поезд с уже готовым маршрутом
             Train train(t["id"], *type_it, route, t["base_price"]);
 
-            // Загружаем даты отправления
             for (auto& date : t["departure_dates"])
                 train.add_departure_date(date);
 
-            // Загружаем вагоны
             for (auto& c : t["cars"]) {
                 Car car = { c["id"], c["price_coef"], c["seats"] };
                 train.add_car(car);
@@ -286,7 +282,6 @@ Ticket& Manager::buy_ticket(User& user, int train_id, int car_id, const std::str
             user.add_ticket(ticket);
             std::cout << "Билет куплен успешно!" << std::endl;
 
-            // возвращаем ссылку на только что добавленный билет
             return user.get_tickets().back();
         }
     }
