@@ -262,11 +262,11 @@ Ticket& Manager::buy_ticket(User& user, int train_id, int car_id, const std::str
             auto it_to = std::find(stations.begin(), stations.end(), to);
 
             if (it_from == stations.end() || it_to == stations.end()) {
-                throw std::runtime_error("Invalid station names");
+                throw std::runtime_error("Станции не найдены");
             }
 
             if (std::distance(stations.begin(), it_from) >= std::distance(stations.begin(), it_to)) {
-                throw std::runtime_error("'from' station must be before 'to' station in the route");
+                throw std::runtime_error("Станция отправления должна находиться перед станцией назначения в маршруте.");
             }
 
             double price = train.calculate_price(from, to, car_id);
@@ -279,7 +279,7 @@ Ticket& Manager::buy_ticket(User& user, int train_id, int car_id, const std::str
 
             if (confirm != "д" && confirm != "Д") {
                 std::cout << "Покупка отменена." << std::endl;
-                throw std::runtime_error("Purchase canceled");
+                throw std::runtime_error("Покупка отменена");
             }
 
             Ticket ticket = {train_id, car_id, from, to, price};
@@ -291,5 +291,5 @@ Ticket& Manager::buy_ticket(User& user, int train_id, int car_id, const std::str
         }
     }
 
-    throw std::runtime_error("Train not found");
+    throw std::runtime_error("Поезд не найден");
 }
