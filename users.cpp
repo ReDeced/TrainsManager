@@ -58,7 +58,6 @@ void Ticket::save_to_file() const {
     }
 }
 
-
 void User::show_tickets() const {
     std::cout << "Билеты пользователя " << passport.surname << ":" << std::endl;
     for (const auto& ticket : tickets) {
